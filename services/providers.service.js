@@ -15,4 +15,19 @@ async function getAllProviders() {
   return await Provider.find();
 }
 
-module.exports = { createProvider, getAllProviders };
+// Actualizar proveedor por ID
+async function updateProvider(id, data) {
+  const provider = await Provider.findByIdAndUpdate(id, data, { new: true, runValidators: true });
+  if (!provider) throw new Error("Proveedor no encontrado");
+  return provider;
+}
+
+// Borrar proveedor por ID
+async function deleteProvider(id) {
+  const provider = await Provider.findByIdAndDelete(id);
+  if (!provider) throw new Error("Proveedor no encontrado");
+  return { message: "Proveedor eliminado correctamente" };
+}
+
+module.exports = { createProvider, getAllProviders, updateProvider, deleteProvider };
+
