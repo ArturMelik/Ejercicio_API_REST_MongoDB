@@ -1,18 +1,17 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { Product } = require('../models/products.model');
+const { createProduct } = require("../services/products.service");
 
-// GET - todos los productos (populate para incluir datos del proveedor)
-router.get('/', async (req, res) => {
-  const products = await Product.find().populate('provider');
-  res.json(products);
-});
-
-// POST - crear un nuevo producto
-router.post('/', async (req, res) => {
+router.post("/", async (req, res) => {
   try {
-    const product = new Product(req.body);
-    await product.save();
+    const product = await createProduct(
+      req.body.id,
+      req.body.title,
+      req.body.price,
+      req.body.description,
+      req.body.image,
+      req.body.company_name
+    );
     res.status(201).json(product);
   } catch (error) {
     res.status(400).json({ message: error.message });

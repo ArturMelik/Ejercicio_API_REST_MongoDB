@@ -1,18 +1,15 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const Provider = require('../models/provider.model');
+const { createProvider, getAllProviders } = require("../services/providers.service");
 
-// GET - obtener todos los providers
-router.get('/', async (req, res) => {
-  const providers = await Provider.find();
+router.get("/", async (req, res) => {
+  const providers = await getAllProviders();
   res.json(providers);
 });
 
-// POST - crear un provider
-router.post('/', async (req, res) => {
+router.post("/", async (req, res) => {
   try {
-    const provider = new Provider(req.body);
-    await provider.save();
+    const provider = await createProvider(req.body);
     res.status(201).json(provider);
   } catch (error) {
     res.status(400).json({ message: error.message });
